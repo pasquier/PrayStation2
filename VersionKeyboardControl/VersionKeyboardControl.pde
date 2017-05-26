@@ -185,13 +185,13 @@ void draw() {
     //println(currentSwitchValue);
     //seek out white space over already painted
     for (int i = 0; i <= 100000; i++) {
-      rand_x =  int(random(width-1));
-      rand_y = int(random(height-1));
-      currentColor = pixels[rand_y*width+rand_x];
-      if (currentColor == blackBG) {
-        //white pixel found - quit search
-        i = 100001;
-      }
+     rand_x = int(random(width-1));
+     rand_y = int(random(height-1));
+     currentColor = pixels[rand_y*width+rand_x];
+     if (currentColor == blackBG) {
+       //white pixel found - quit search
+       i = 100001;
+     }
     }
     rand_img_idx = (int)random(NUM_IMAGES);
   }

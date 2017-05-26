@@ -127,15 +127,15 @@ class AestheticAgent { //<>//
     color c;
     do {
       target = new PVector((int)random(3) - 1, (int)random(3) - 1);
-      loc = (x + 1) + (y + 1) * width;
-    } while ((target.x ==0 && target.y ==0)|| loc < 0 || loc > pixels.length);
+      loc = int((x + target.x) + (y + target.y) * width);
+    } while ((target.x == 0 && target.y == 0)|| loc < 0 || loc > pixels.length);
     c = pixels[loc];
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
         if (i==1 && j==1) continue;
         loc = (x - 1 + i) + (y - 1 + j) * width;
-        if (loc < 0 || loc > pixels.length) continue;
+        if (loc < 0 || loc >= pixels.length) continue;
         if (isBrighter(pixels[loc], c)) {
           c = pixels[loc];
           target.x = - 1 + i;
@@ -148,12 +148,12 @@ class AestheticAgent { //<>//
 
   // find the darkest neighbour of current agent
   PVector findDarkestNeighbour() {
-    PVector target;
+    PVector target; // neighbour's relative position to the agent
     int loc;
     color c;
     do {
       target = new PVector((int)random(3) - 1, (int)random(3) - 1);
-      loc = (x + 1) + (y + 1) * width;
+      loc = int((x + target.x) + (y + target.y) * width);
     } while ((target.x ==0 && target.y ==0) || loc < 0 || loc >= pixels.length);
     c = pixels[loc];
 
@@ -161,7 +161,7 @@ class AestheticAgent { //<>//
       for (int j = 0; j < 3; j++) {
         if (i==1 && j==1) continue;
         loc = (x - 1 + i) + (y - 1 + j) * width;
-        if (loc < 0 || loc > pixels.length) continue;
+        if (loc < 0 || loc >= pixels.length) continue;
         if (isBrighter(c, pixels[loc])) {
           c = pixels[loc];
           target.x = - 1 + i;

@@ -12,7 +12,7 @@ PImage history;
 ArrayList<AestheticAgent> agents;
 float LERP_AMOUNT = 0.1;
 static int MAX_AGENTS = 15000;
-int NUM_IMAGES = 2;
+int NUM_IMAGES = 5;
 int rand_x; 
 int rand_y;
 int rand_img_idx;
@@ -92,13 +92,13 @@ void setup() {
     images.get(CHRISTIANITY).add(loadImage("Christianity-" + i + ".jpg"));
   }
   for (int i = 0; i < NUM_IMAGES; i++) {
-    images.get(ISLAM).add(loadImage("Christianity-" + i + ".jpg"));
+    images.get(ISLAM).add(loadImage("Islam-" + i + ".jpg"));
   }
   for (int i = 0; i < NUM_IMAGES; i++) {
-    images.get(ATHEIST).add(loadImage("Christianity-" + i + ".jpg"));
+    images.get(ATHEIST).add(loadImage("Atheist-" + i + ".jpg"));
   }
   for (int i = 0; i < NUM_IMAGES; i++) {
-    images.get(HINDUISM).add(loadImage("Christianity-" + i + ".jpg"));
+    images.get(HINDUISM).add(loadImage("Hinduism-" + i + ".jpg"));
   }
   for (int i = 0; i < NUM_IMAGES; i++) {
     images.get(CHINESE).add(loadImage("ChineseTraditionalReligions-" + i + ".jpg"));
@@ -107,7 +107,7 @@ void setup() {
     images.get(BUDDHISM).add(loadImage("Buddhism-" + i + ".jpg"));
   }
   for (int i = 0; i < NUM_IMAGES; i++) {
-    images.get(ANIMISM).add(loadImage("Christianity-" + i + ".jpg"));
+    images.get(ANIMISM).add(loadImage("Animism-" + i + ".jpg"));
   }
 
   //  //set up Arduino 

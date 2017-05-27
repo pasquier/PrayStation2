@@ -127,8 +127,8 @@ class AestheticAgent { //<>//
     color c;
     do {
       target = new PVector((int)random(3) - 1, (int)random(3) - 1);
-      loc = int((x + target.x) + (y + target.y) * width);
-    } while ((target.x == 0 && target.y == 0)|| loc < 0 || loc > pixels.length);
+      loc = (x + (int)target.x) + (y + (int)target.y) * width;
+    } while ((target.x == 0 && target.y == 0)|| loc < 0 || loc >= pixels.length);
     c = pixels[loc];
 
     for (int i = 0; i < 3; i++) {
@@ -153,7 +153,7 @@ class AestheticAgent { //<>//
     color c;
     do {
       target = new PVector((int)random(3) - 1, (int)random(3) - 1);
-      loc = int((x + target.x) + (y + target.y) * width);
+      loc = (x + (int)target.x) + (y + (int)target.y) * width;
     } while ((target.x ==0 && target.y ==0) || loc < 0 || loc >= pixels.length);
     c = pixels[loc];
 

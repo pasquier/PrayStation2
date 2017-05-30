@@ -1,15 +1,19 @@
 class AestheticAgent { //<>//
-  int x, y, belief_type, image_index, lifespan, size;
+  int x, y, belief_type, image_index, lifespan;
+  float size, speed;
+
+  // for special type of movement
   PVector direction; // for radial move
   PVector center;    // for inwards move
 
-  AestheticAgent(int x, int y, int belief_type, int image_index, int lifespan) {
+  AestheticAgent(int x, int y, int belief_type, int image_index, int lifespan, float speed) {
     this.x = x;
     this.y = y;
     this.belief_type = belief_type;
     this.image_index = image_index;
     this.lifespan = lifespan;
-    this.size=1;
+    this.size = 1;
+    this.speed = speed;
     direction = new PVector();
     center = new PVector();
 
@@ -30,10 +34,23 @@ class AestheticAgent { //<>//
 
   void feed() {
     int loc = x + y * width;
-    pixels[loc] = lerpColor(pixels[loc], images.get(belief_type).get(image_index).pixels[loc], LERP_AMOUNT);
+    if (loc >= pixels.length) {
+      println("Exception Of Function feed(): loc out of bound.");
+      lifespan = 0;
+      return;
+    }
+    
+    feedPixel(loc);
+  }
+  
+  private void feedPixel(int loc) {
+    color c = lerpColor(myPixels[loc], images.get(belief_type).get(image_index).pixels[loc], LERP_AMOUNT);
+    myPixels[loc] = c;
+    pixels[loc] = c;
   }
 
   void move() {
+    if(lifespan <= 0) return;
     int dx = 0;
     int dy = 0;
     // calculate dx and dy
@@ -90,10 +107,32 @@ class AestheticAgent { //<>//
         break;
       }
     }
+    dx *= speed;
+    dy *= speed;
+    //dx *= 1 + random(speed);
+    //dy *= 1 + random(speed);
     x += dx;
     y += dy;
     checkBounds();
+
+    // visualize the agent
+    int loc = x + y * width;
+    if (isVisible) {
+      pixels[loc] = color(255, 0, 0);
+    }
+
     lifespan--;
+  }
+
+  // when the agent dies, restore the curent pixel from (maybe) white to the original
+  void die() {
+    int loc = x + y * width;
+    if (loc >= pixels.length) {
+      println("Exception Of Function die(): loc out of bound.");
+      lifespan = 0;
+      return;
+    }
+    pixels[loc] = myPixels[loc];
   }
 
   int getLifespan() {
@@ -120,16 +159,24 @@ class AestheticAgent { //<>//
     return (brightness(c1)) > (brightness(c2));
   }
 
-  // find the brightest neighbour of current agent
-  PVector findBrightestNeighbour() {
-    PVector target;
+  // find the leagle random neighbour of current agent
+  PVector findRandomNeighbour() {
+    PVector target = new PVector();
+    if (pixels.length <= 1) return target;
     int loc;
-    color c;
     do {
       target = new PVector((int)random(3) - 1, (int)random(3) - 1);
       loc = (x + (int)target.x) + (y + (int)target.y) * width;
-    } while ((target.x == 0 && target.y == 0)|| loc < 0 || loc >= pixels.length);
-    c = pixels[loc];
+    } while ((target.x == 0 && target.y == 0) || loc < 0 || loc >= pixels.length);
+    return target;
+  }
+
+  // find the brightest neighbour of current agent
+  PVector findBrightestNeighbour() {
+    PVector random = findRandomNeighbour(); // neighbour's relative position to the agent
+    PVector darkest = random.copy();
+    int loc = (x + (int)random.x) + (y + (int)random.y) * width;
+    color c = pixels[loc];
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -138,24 +185,20 @@ class AestheticAgent { //<>//
         if (loc < 0 || loc >= pixels.length) continue;
         if (isBrighter(pixels[loc], c)) {
           c = pixels[loc];
-          target.x = - 1 + i;
-          target.y = - 1 + j;
+          darkest.x = - 1 + i;
+          darkest.y = - 1 + j;
         }
       }
     }
-    return target;
+    return random(1) > 0.25 ? darkest : random;
   }
 
   // find the darkest neighbour of current agent
   PVector findDarkestNeighbour() {
-    PVector target; // neighbour's relative position to the agent
-    int loc;
-    color c;
-    do {
-      target = new PVector((int)random(3) - 1, (int)random(3) - 1);
-      loc = (x + (int)target.x) + (y + (int)target.y) * width;
-    } while ((target.x ==0 && target.y ==0) || loc < 0 || loc >= pixels.length);
-    c = pixels[loc];
+    PVector random = findRandomNeighbour(); // neighbour's relative position to the agent
+    PVector brightest = random.copy();
+    int loc = (x + (int)random.x) + (y + (int)random.y) * width;
+    color c = pixels[loc];
 
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
@@ -164,11 +207,11 @@ class AestheticAgent { //<>//
         if (loc < 0 || loc >= pixels.length) continue;
         if (isBrighter(c, pixels[loc])) {
           c = pixels[loc];
-          target.x = - 1 + i;
-          target.y = - 1 + j;
+          brightest.x = - 1 + i;
+          brightest.y = - 1 + j;
         }
       }
     }
-    return target;
+    return random(1) > 0.25 ? brightest : random;
   }
 }

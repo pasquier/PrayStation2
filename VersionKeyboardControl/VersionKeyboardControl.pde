@@ -6,9 +6,13 @@
 //import processing.serial.*;
 //import cc.arduino.*;
 
-//agent variables
+// resources
 ArrayList<ArrayList<PImage>> images;
 PImage history;
+
+//agent variables
+float speed = 1.0;
+float size = 1.0;
 color[] myPixels; // the pixels without visualization of the agents
 ArrayList<AestheticAgent> agents;
 float LERP_AMOUNT = 0.1;
@@ -171,11 +175,59 @@ void keyPressed() {
   case 'V':
     isVisible = !isVisible;
     break;
-
+  
+  // keys to change speed variable
+  case 'q':
+  case 'Q':
+    speed = 1.0;
+    println("\nspeed: " + speed);
+    break;
+  case 'w':
+  case 'W':
+    speed = 2.0;
+    println("\nspeed: " + speed);
+    break;
+  case 'e':
+  case 'E':
+    speed = 3.0;
+    println("\nspeed: " + speed);
+    break;
   case 'r':
   case 'R':
-    arrayCopy(myPixels, pixels);
-    updatePixels();
+    speed = 5.0;
+    println("\nspeed: " + speed);
+    break;
+  case 't':
+  case 'T':
+    speed = 8.0;
+    println("\nspeed: " + speed);
+    break;
+  case 'y':
+  case 'Y':
+    speed = 15.0;
+    println("\nspeed: " + speed);
+    break;
+  
+  // keys to change speed variable
+  case 'u':
+  case 'U':
+    size = 1.0;
+    println("\nsize: " + size);
+    break;
+  case 'i':
+  case 'I':
+    size = 2.0;
+    println("\nsize: " + size);
+    break;
+  case 'o':
+  case 'O':
+    size = 3.0;
+    println("\nsize: " + size);
+    break;
+  case 'p':
+  case 'P':
+    size = 4.0;
+    println("\nsize: " + size);
     break;
   }
 }
@@ -268,47 +320,46 @@ void draw() {
     if (agents.size() < MAX_AGENTS) {
       // if(millis()-previousTime > ( 0 - (attention + meditation * 5) )) {
       //previousTime = millis();
-      float speed = 3.0;
 
       //Christianity
       if (currentSwitchValue == 0) {
-      //if (key == '1') {
-        agents.add(new AestheticAgent(rand_x, rand_y, CHRISTIANITY, rand_img_idx, 1000, speed));
+        //if (key == '1') {
+        agents.add(new AestheticAgent(rand_x, rand_y, CHRISTIANITY, rand_img_idx, 1000, speed, size));
       }
       //Islam
       else if (currentSwitchValue == 1) {
-      //else if (key == '2') {
-        agents.add(new AestheticAgent(rand_x, rand_y, ISLAM, rand_img_idx, 1000, speed));
+        //else if (key == '2') {
+        agents.add(new AestheticAgent(rand_x, rand_y, ISLAM, rand_img_idx, 1000, speed, size));
       }
       //Agnostic
       else if (currentSwitchValue == 2) {
-      //else if (key == '3') {
-        agents.add(new AestheticAgent(rand_x, rand_y, int(random(6)), rand_img_idx, 1000, speed));
+        //else if (key == '3') {
+        agents.add(new AestheticAgent(rand_x, rand_y, int(random(6)), rand_img_idx, 1000, speed, size));
       }
       //Aetheist
       else if (currentSwitchValue == 3) {
-      //else if (key == '4') {
-        agents.add(new AestheticAgent(rand_x, rand_y, ATHEIST, rand_img_idx, 1000, speed));
+        //else if (key == '4') {
+        agents.add(new AestheticAgent(rand_x, rand_y, ATHEIST, rand_img_idx, 1000, speed, size));
       }
       //Hinduism
       else if (currentSwitchValue == 4) {
-      //else if (key == '5') {
-        agents.add(new AestheticAgent(rand_x, rand_y, HINDUISM, rand_img_idx, 100, speed));
+        //else if (key == '5') {
+        agents.add(new AestheticAgent(rand_x, rand_y, HINDUISM, rand_img_idx, 100, speed, size));
       }
       //Chinese Folk 
       else if (currentSwitchValue == 5) {
-      //else if (key == '6') {
-        agents.add(new AestheticAgent(rand_x, rand_y, CHINESE, rand_img_idx, 800, speed));
+        //else if (key == '6') {
+        agents.add(new AestheticAgent(rand_x, rand_y, CHINESE, rand_img_idx, 800, speed, size));
       }
       //Buddhism
       else if (currentSwitchValue == 6) {
-      //else if (key == '7') {
-        agents.add(new AestheticAgent(rand_x, rand_y, BUDDHISM, rand_img_idx, 1000, speed));
+        //else if (key == '7') {
+        agents.add(new AestheticAgent(rand_x, rand_y, BUDDHISM, rand_img_idx, 1000, speed, size));
       }
       //Animism
       else if (currentSwitchValue == 7) {
-      //else if (key == '8') {
-        agents.add(new AestheticAgent(rand_x, rand_y, ANIMISM, rand_img_idx, 1000, speed));
+        //else if (key == '8') {
+        agents.add(new AestheticAgent(rand_x, rand_y, ANIMISM, rand_img_idx, 1000, speed, size));
       }
     }
   }

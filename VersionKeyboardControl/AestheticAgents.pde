@@ -1,29 +1,32 @@
 class AestheticAgent { //<>//
   int x, y, belief_type, image_index, lifespan;
-  float size, speed;
+  float speed, size;
 
   // for special type of movement
   PVector direction; // for radial move
   PVector center;    // for inwards move
 
-  AestheticAgent(int x, int y, int belief_type, int image_index, int lifespan, float speed) {
+  AestheticAgent(int x, int y, int belief_type, int image_index, int lifespan, float speed, float size) {
     this.x = x;
     this.y = y;
     this.belief_type = belief_type;
     this.image_index = image_index;
     this.lifespan = lifespan;
-    this.size = 1;
     this.speed = speed;
+    this.size = size;
     direction = new PVector();
     center = new PVector();
 
-    if (belief_type == HINDUISM) { // radial move
+    // radial move
+    if (belief_type == HINDUISM) { 
       direction = new PVector((int)random(6), (int)random(6));
-    } else if (belief_type == CHINESE) { // inwards move
+    } 
+    // inwards move
+    else if (belief_type == CHINESE) { 
       do {
         float angle = random(360);
         center = new PVector(x, y);
-        float radius = random(50, 120);
+        float radius = random(50, 200);
         this.x = x + (int)(cos(radians(angle)) * radius + random(20));
         this.y = y + (int)(sin(radians(angle)) * radius + random(20));
         direction.x = center.x - x > 0 ? -1 : 1;
@@ -34,23 +37,80 @@ class AestheticAgent { //<>//
 
   void feed() {
     int loc = x + y * width;
-    if (loc >= pixels.length) {
-      println("Exception Of Function feed(): loc out of bound.");
+    if (loc < 0 || loc >= pixels.length || loc >= myPixels.length) {
+      println("\nException Of Function feed(): loc out of bound.");
       lifespan = 0;
       return;
     }
-    
-    feedPixel(loc);
+
+    // dot brush
+    if (size <= 1.0) {        
+      feedPixel(loc);
+    } 
+    // line brush: random horizontal or vertical
+    else if (size <= 2.0) { 
+      if (random(1) < 0.5) {
+        feedPixel(loc);
+        feedPixel(loc - 1);
+        feedPixel(loc + 1);
+      } else {
+        feedPixel(loc);
+        feedPixel(loc - width);
+        feedPixel(loc + width);
+      }
+    } 
+    // cross brush: random wood-cross or x-cross
+    else if (size <= 3.0) { 
+      if (random(1) < 0.5) {
+        feedPixel(loc);
+        feedPixel(loc - 1);
+        feedPixel(loc + 1);
+        feedPixel(loc - width);
+        feedPixel(loc + width);
+      } else {
+        feedPixel(loc);
+        feedPixel(loc - width - 1);
+        feedPixel(loc - width + 1);
+        feedPixel(loc + width - 1);
+        feedPixel(loc + width + 1);
+      }
+    }
+    // circle brush
+    //  x x 
+    // x x x
+    //  xxx 
+    // x x x
+    //  x x 
+    else {
+      feedPixel(loc);
+      feedPixel(loc - 1);
+      feedPixel(loc + 1);
+      feedPixel(loc - width);
+      feedPixel(loc + width);
+      feedPixel(loc - width);
+      feedPixel(loc - width + 2);
+      feedPixel(loc - width - 2);
+      feedPixel(loc + width);
+      feedPixel(loc + width + 2);
+      feedPixel(loc + width - 2);
+      feedPixel(loc - width * 2 + 1);
+      feedPixel(loc - width * 2 - 1);
+      feedPixel(loc + width * 2 + 1);
+      feedPixel(loc + width * 2 - 1);
+    }
   }
-  
+
   private void feedPixel(int loc) {
+    if (loc < 0 || loc >= pixels.length || loc >= myPixels.length) {
+      return;
+    }
     color c = lerpColor(myPixels[loc], images.get(belief_type).get(image_index).pixels[loc], LERP_AMOUNT);
     myPixels[loc] = c;
     pixels[loc] = c;
   }
 
   void move() {
-    if(lifespan <= 0) return;
+    if (lifespan <= 0) return;
     int dx = 0;
     int dy = 0;
     // calculate dx and dy
@@ -126,7 +186,7 @@ class AestheticAgent { //<>//
   void die() {
     int loc = x + y * width;
     if (loc >= pixels.length) {
-      println("Exception Of Function die(): loc out of bound.");
+      println("\nException Of Function die(): loc out of bound.");
       lifespan = 0;
       return;
     }

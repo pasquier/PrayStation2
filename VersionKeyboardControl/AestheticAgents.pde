@@ -107,10 +107,8 @@ class AestheticAgent { //<>//
         break;
       }
     }
-    dx *= speed;
-    dy *= speed;
-    //dx *= 1 + random(speed);
-    //dy *= 1 + random(speed);
+    dx *= 1 + random(speed);
+    dy *= 1 + random(speed);
     x += dx;
     y += dy;
     checkBounds();

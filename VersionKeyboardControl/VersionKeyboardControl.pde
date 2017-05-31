@@ -68,7 +68,7 @@ int bit1 = 0;
 int bit2 = 0;
 int bit3 = 0;
 int currentSwitchValue = -1;
-int newSwitchValue = 0;
+int newSwitchValue = -1;
 
 //image timer
 int imageTimer;
@@ -268,46 +268,46 @@ void draw() {
     if (agents.size() < MAX_AGENTS) {
       // if(millis()-previousTime > ( 0 - (attention + meditation * 5) )) {
       //previousTime = millis();
-      float speed = 2.0;
+      float speed = 3.0;
 
       //Christianity
-      //if (currentSwitchValue == 0) {
-      if (key == '1') {
+      if (currentSwitchValue == 0) {
+      //if (key == '1') {
         agents.add(new AestheticAgent(rand_x, rand_y, CHRISTIANITY, rand_img_idx, 1000, speed));
       }
       //Islam
-      // else if (currentSwitchValue == 1) {
-      else if (key == '2') {
+      else if (currentSwitchValue == 1) {
+      //else if (key == '2') {
         agents.add(new AestheticAgent(rand_x, rand_y, ISLAM, rand_img_idx, 1000, speed));
       }
       //Agnostic
-      //else if (currentSwitchValue == 2) {
-      else if (key == '3') {
+      else if (currentSwitchValue == 2) {
+      //else if (key == '3') {
         agents.add(new AestheticAgent(rand_x, rand_y, int(random(6)), rand_img_idx, 1000, speed));
       }
       //Aetheist
-      //else if (currentSwitchValue == 3) {
-      else if (key == '4') {
+      else if (currentSwitchValue == 3) {
+      //else if (key == '4') {
         agents.add(new AestheticAgent(rand_x, rand_y, ATHEIST, rand_img_idx, 1000, speed));
       }
       //Hinduism
-      //else if (currentSwitchValue == 4) {
-      else if (key == '5') {
+      else if (currentSwitchValue == 4) {
+      //else if (key == '5') {
         agents.add(new AestheticAgent(rand_x, rand_y, HINDUISM, rand_img_idx, 100, speed));
       }
       //Chinese Folk 
-      //else if (currentSwitchValue == 5) {
-      else if (key == '6') {
+      else if (currentSwitchValue == 5) {
+      //else if (key == '6') {
         agents.add(new AestheticAgent(rand_x, rand_y, CHINESE, rand_img_idx, 800, speed));
       }
       //Buddhism
-      // else if (currentSwitchValue == 6) {
-      else if (key == '7') {
+      else if (currentSwitchValue == 6) {
+      //else if (key == '7') {
         agents.add(new AestheticAgent(rand_x, rand_y, BUDDHISM, rand_img_idx, 1000, speed));
       }
       //Animism
-      //else if (currentSwitchValue == 7) {
-      else if (key == '8') {
+      else if (currentSwitchValue == 7) {
+      //else if (key == '8') {
         agents.add(new AestheticAgent(rand_x, rand_y, ANIMISM, rand_img_idx, 1000, speed));
       }
     }

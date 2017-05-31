@@ -35,6 +35,7 @@ int[][] directions = {
   {-3, -1, 0}, // backward fast
 };
 boolean isVisible = true;
+boolean isBold = true;
 
 final int CHRISTIANITY   = 0;
 final int ISLAM          = 1;
@@ -173,10 +174,19 @@ void keyPressed() {
 
   case 'v':
   case 'V':
+    arrayCopy(myPixels, pixels);
+    updatePixels();
     isVisible = !isVisible;
     break;
-  
-  // keys to change speed variable
+
+  case 'b':
+  case 'B':
+    arrayCopy(myPixels, pixels);
+    updatePixels();
+    isBold = !isBold;
+    break;
+
+    // keys to change speed variable
   case 'q':
   case 'Q':
     speed = 1.0;
@@ -207,8 +217,8 @@ void keyPressed() {
     speed = 15.0;
     println("\nspeed: " + speed);
     break;
-  
-  // keys to change speed variable
+
+    // keys to change speed variable
   case 'u':
   case 'U':
     size = 1.0;

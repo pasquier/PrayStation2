@@ -98,15 +98,24 @@ class AestheticAgent { //<>//
       feedPixel(loc + width * 2 + 1);
       feedPixel(loc + width * 2 - 1);
     }
+
+    // erase agent visualization
+    if (isVisible && isBold) {
+      eraseAgent();
+    }
   }
 
   private void feedPixel(int loc) {
+    color c = lerpColor(myPixels[loc], images.get(belief_type).get(image_index).pixels[loc], LERP_AMOUNT);
+    paintPixel(pixels, loc, c);
+    paintPixel(myPixels, loc, c);
+  }
+
+  private void paintPixel(color[] array, int loc, color c) {
     if (loc < 0 || loc >= pixels.length || loc >= myPixels.length) {
       return;
     }
-    color c = lerpColor(myPixels[loc], images.get(belief_type).get(image_index).pixels[loc], LERP_AMOUNT);
-    myPixels[loc] = c;
-    pixels[loc] = c;
+    array[loc] = c;
   }
 
   void move() {
@@ -174,9 +183,8 @@ class AestheticAgent { //<>//
     checkBounds();
 
     // visualize the agent
-    int loc = x + y * width;
     if (isVisible) {
-      pixels[loc] = color(255, 0, 0);
+      drawAgent();
     }
 
     lifespan--;
@@ -190,7 +198,7 @@ class AestheticAgent { //<>//
       lifespan = 0;
       return;
     }
-    pixels[loc] = myPixels[loc];
+    eraseAgent();
   }
 
   int getLifespan() {
@@ -210,6 +218,41 @@ class AestheticAgent { //<>//
     if ( y > height - 1 ) { 
       y = 0;
     }
+  }
+
+  // draw agent if it's visible
+  // a dot if not bold, a wood-cross if bold
+  private void drawAgent() {
+    int loc = x + y * width;
+    color c1 = color(255, 0, 0);
+    color c2 = color(255, 0, 0, 0.5);
+    if (isBold) {
+      paintPixel(pixels, loc, c1);
+      paintPixel(pixels, loc - 1, c2);
+      paintPixel(pixels, loc + 1, c2);
+      paintPixel(pixels, loc - width, c2);
+      paintPixel(pixels, loc + width, c2);
+    } else {
+      paintPixel(pixels, loc, c1);
+    }
+  }
+
+  // erase the agent drewn from the last step
+  private void eraseAgent() {
+    int loc = x + y * width;
+    if (isBold) {
+      pixels[loc] = myPixels[loc];
+      if(isLeagleLoc(loc-1)) pixels[loc-1] = myPixels[loc-1];
+      if(isLeagleLoc(loc + 1)) pixels[loc + 1] = myPixels[loc + 1];
+      if(isLeagleLoc(loc - width)) pixels[loc - width] = myPixels[loc - width];
+      if(isLeagleLoc(loc + width)) pixels[loc + width] = myPixels[loc + width];
+    } else {
+      pixels[loc] = myPixels[loc];
+    }
+  }
+  
+  private boolean isLeagleLoc(int loc) {
+    return loc > 0 && loc < pixels.length;
   }
 
   // return if c1 is brighter than c2

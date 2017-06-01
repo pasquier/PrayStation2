@@ -43,36 +43,37 @@ class AestheticAgent { //<>//
       return;
     }
 
+    float lerp_amount = 0.1;
     // dot brush
     if (size <= 1.0) {        
-      feedPixel(loc);
+      feedPixel(loc, lerp_amount);
     } 
     // line brush: random horizontal or vertical
     else if (size <= 2.0) { 
       if (random(1) < 0.5) {
-        feedPixel(loc);
-        feedPixel(loc - 1);
-        feedPixel(loc + 1);
+        feedPixel(loc, lerp_amount + 0.05);
+        feedPixel(loc - 1, lerp_amount - 0.025);
+        feedPixel(loc + 1, lerp_amount - 0.025);
       } else {
-        feedPixel(loc);
-        feedPixel(loc - width);
-        feedPixel(loc + width);
+        feedPixel(loc, lerp_amount + 0.05);
+        feedPixel(loc - width, lerp_amount - 0.025);
+        feedPixel(loc + width, lerp_amount - 0.025);
       }
     } 
     // cross brush: random wood-cross or x-cross
     else if (size <= 3.0) { 
       if (random(1) < 0.5) {
-        feedPixel(loc);
-        feedPixel(loc - 1);
-        feedPixel(loc + 1);
-        feedPixel(loc - width);
-        feedPixel(loc + width);
+        feedPixel(loc, lerp_amount + 0.05);
+        feedPixel(loc - 1, lerp_amount - 0.025);
+        feedPixel(loc + 1, lerp_amount - 0.025);
+        feedPixel(loc - width, lerp_amount - 0.025);
+        feedPixel(loc + width, lerp_amount - 0.025);
       } else {
-        feedPixel(loc);
-        feedPixel(loc - width - 1);
-        feedPixel(loc - width + 1);
-        feedPixel(loc + width - 1);
-        feedPixel(loc + width + 1);
+        feedPixel(loc, lerp_amount + 0.05);
+        feedPixel(loc - width - 1, lerp_amount - 0.025);
+        feedPixel(loc - width + 1, lerp_amount - 0.025);
+        feedPixel(loc + width - 1, lerp_amount - 0.025);
+        feedPixel(loc + width + 1, lerp_amount - 0.025);
       }
     }
     // circle brush
@@ -82,21 +83,20 @@ class AestheticAgent { //<>//
     // x x x
     //  x x 
     else {
-      feedPixel(loc);
-      feedPixel(loc - 1);
-      feedPixel(loc + 1);
-      feedPixel(loc - width);
-      feedPixel(loc + width);
-      feedPixel(loc - width);
-      feedPixel(loc - width + 2);
-      feedPixel(loc - width - 2);
-      feedPixel(loc + width);
-      feedPixel(loc + width + 2);
-      feedPixel(loc + width - 2);
-      feedPixel(loc - width * 2 + 1);
-      feedPixel(loc - width * 2 - 1);
-      feedPixel(loc + width * 2 + 1);
-      feedPixel(loc + width * 2 - 1);
+      feedPixel(loc, lerp_amount + 0.05);
+      feedPixel(loc - 1, lerp_amount);
+      feedPixel(loc + 1, lerp_amount);
+      feedPixel(loc - width, lerp_amount);
+      feedPixel(loc + width, lerp_amount);
+      feedPixel(loc - width, lerp_amount - 0.01);
+      feedPixel(loc - width + 2, lerp_amount - 0.01);
+      feedPixel(loc - width - 2, lerp_amount - 0.01);
+      feedPixel(loc + width + 2, lerp_amount - 0.01);
+      feedPixel(loc + width - 2, lerp_amount - 0.01);
+      feedPixel(loc - width * 2 + 1, lerp_amount - 0.01);
+      feedPixel(loc - width * 2 - 1, lerp_amount - 0.01);
+      feedPixel(loc + width * 2 + 1, lerp_amount - 0.01);
+      feedPixel(loc + width * 2 - 1, lerp_amount - 0.01);
     }
 
     // erase agent visualization
@@ -105,8 +105,11 @@ class AestheticAgent { //<>//
     }
   }
 
-  private void feedPixel(int loc) {
-    color c = lerpColor(myPixels[loc], images.get(belief_type).get(image_index).pixels[loc], LERP_AMOUNT);
+  private void feedPixel(int loc, float lerp) {
+    if (loc < 0 || loc >= pixels.length || loc >= myPixels.length) {
+      return;
+    }
+    color c = lerpColor(myPixels[loc], images.get(belief_type).get(image_index).pixels[loc], lerp);
     paintPixel(pixels, loc, c);
     paintPixel(myPixels, loc, c);
   }
@@ -193,7 +196,7 @@ class AestheticAgent { //<>//
   // when the agent dies, restore the curent pixel from (maybe) white to the original
   void die() {
     int loc = x + y * width;
-    if (loc >= pixels.length) {
+    if (loc >= pixels.length || loc < 0) {
       println("\nException Of Function die(): loc out of bound.");
       lifespan = 0;
       return;
@@ -225,13 +228,12 @@ class AestheticAgent { //<>//
   private void drawAgent() {
     int loc = x + y * width;
     color c1 = color(255, 0, 0);
-    color c2 = color(255, 0, 0, 0.5);
     if (isBold) {
       paintPixel(pixels, loc, c1);
-      paintPixel(pixels, loc - 1, c2);
-      paintPixel(pixels, loc + 1, c2);
-      paintPixel(pixels, loc - width, c2);
-      paintPixel(pixels, loc + width, c2);
+      paintPixel(pixels, loc - 1, c1);
+      paintPixel(pixels, loc + 1, c1);
+      paintPixel(pixels, loc - width, c1);
+      paintPixel(pixels, loc + width, c1);
     } else {
       paintPixel(pixels, loc, c1);
     }

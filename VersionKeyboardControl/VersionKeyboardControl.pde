@@ -15,7 +15,6 @@ float speed = 1.0;
 float size = 1.0;
 color[] myPixels; // the pixels without visualization of the agents
 ArrayList<AestheticAgent> agents;
-float LERP_AMOUNT = 0.1;
 static int MAX_AGENTS = 15000;
 int NUM_IMAGES = 5;
 int rand_x; 

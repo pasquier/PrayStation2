@@ -8,7 +8,11 @@
 
 // resources
 ArrayList<ArrayList<PImage>> images;
+// record how many images each belief has. In the order of {CHRISTIANITY, ISLAM, ATHEIST, HINDUISM, CHINESE, BUDDHISM, ANIMISM}
+int[] image_cnt = {16, 8, 15, 5, 11, 6, 7};
 PImage history;
+int agnostic_belif = int(random(6));
+int agnostic_img_idx = int(random(6));
 
 //agent variables
 float speed = 1.0;
@@ -16,10 +20,8 @@ float size = 1.0;
 color[] myPixels; // the pixels without visualization of the agents
 ArrayList<AestheticAgent> agents;
 static int MAX_AGENTS = 15000;
-int NUM_IMAGES = 5;
 int rand_x; 
 int rand_y;
-int rand_img_idx;
 int MAX_WAIT = 1000;
 int previousTime;
 color whiteBG = color(255, 255, 255);
@@ -94,25 +96,25 @@ void setup() {
   for (int i = 0; i < 7; i++) {
     images.add(new ArrayList<PImage>());
   }
-  for (int i = 0; i < NUM_IMAGES; i++) {
+  for (int i = 0; i < image_cnt[0]; i++) {
     images.get(CHRISTIANITY).add(loadImage("Christianity-" + i + ".jpg"));
   }
-  for (int i = 0; i < NUM_IMAGES; i++) {
+  for (int i = 0; i < image_cnt[1]; i++) {
     images.get(ISLAM).add(loadImage("Islam-" + i + ".jpg"));
   }
-  for (int i = 0; i < NUM_IMAGES; i++) {
+  for (int i = 0; i < image_cnt[2]; i++) {
     images.get(ATHEIST).add(loadImage("Atheist-" + i + ".jpg"));
   }
-  for (int i = 0; i < NUM_IMAGES; i++) {
+  for (int i = 0; i < image_cnt[3]; i++) {
     images.get(HINDUISM).add(loadImage("Hinduism-" + i + ".jpg"));
   }
-  for (int i = 0; i < NUM_IMAGES; i++) {
+  for (int i = 0; i < image_cnt[4]; i++) {
     images.get(CHINESE).add(loadImage("ChineseTraditionalReligions-" + i + ".jpg"));
   }
-  for (int i = 0; i < NUM_IMAGES; i++) {
+  for (int i = 0; i < image_cnt[5]; i++) {
     images.get(BUDDHISM).add(loadImage("Buddhism-" + i + ".jpg"));
   }
-  for (int i = 0; i < NUM_IMAGES; i++) {
+  for (int i = 0; i < image_cnt[6]; i++) {
     images.get(ANIMISM).add(loadImage("Animism-" + i + ".jpg"));
   }
 
@@ -269,7 +271,10 @@ void draw() {
         i = 100001;
       }
     }
-    rand_img_idx = (int)random(NUM_IMAGES);
+
+    // give random value to Agnostic option
+    agnostic_belif = int(random(7));
+    agnostic_img_idx = int(random(image_cnt[agnostic_belif]));
   }
 
   //  //update guages and connectivity LED
@@ -333,42 +338,42 @@ void draw() {
       //Christianity
       if (currentSwitchValue == 0) {
         //if (key == '1') {
-        agents.add(new AestheticAgent(rand_x, rand_y, CHRISTIANITY, rand_img_idx, 1000, speed, size));
+        agents.add(new AestheticAgent(rand_x, rand_y, CHRISTIANITY, (int)random(image_cnt[CHRISTIANITY]), 1000, speed, size));
       }
       //Islam
       else if (currentSwitchValue == 1) {
         //else if (key == '2') {
-        agents.add(new AestheticAgent(rand_x, rand_y, ISLAM, rand_img_idx, 1000, speed, size));
+        agents.add(new AestheticAgent(rand_x, rand_y, ISLAM, (int)random(image_cnt[ISLAM]), 1000, speed, size));
       }
       //Agnostic
       else if (currentSwitchValue == 2) {
         //else if (key == '3') {
-        agents.add(new AestheticAgent(rand_x, rand_y, int(random(6)), rand_img_idx, 1000, speed, size));
+        agents.add(new AestheticAgent(rand_x, rand_y, agnostic_belif, agnostic_img_idx, 1000, speed, size));
       }
       //Aetheist
       else if (currentSwitchValue == 3) {
         //else if (key == '4') {
-        agents.add(new AestheticAgent(rand_x, rand_y, ATHEIST, rand_img_idx, 1000, speed, size));
+        agents.add(new AestheticAgent(rand_x, rand_y, ATHEIST, (int)random(image_cnt[ATHEIST]), 1000, speed, size));
       }
       //Hinduism
       else if (currentSwitchValue == 4) {
         //else if (key == '5') {
-        agents.add(new AestheticAgent(rand_x, rand_y, HINDUISM, rand_img_idx, 100, speed, size));
+        agents.add(new AestheticAgent(rand_x, rand_y, HINDUISM, (int)random(image_cnt[HINDUISM]), 100, speed, size));
       }
       //Chinese Folk 
       else if (currentSwitchValue == 5) {
         //else if (key == '6') {
-        agents.add(new AestheticAgent(rand_x, rand_y, CHINESE, rand_img_idx, 800, speed, size));
+        agents.add(new AestheticAgent(rand_x, rand_y, CHINESE, (int)random(image_cnt[CHINESE]), 800, speed, size));
       }
       //Buddhism
       else if (currentSwitchValue == 6) {
         //else if (key == '7') {
-        agents.add(new AestheticAgent(rand_x, rand_y, BUDDHISM, rand_img_idx, 1000, speed, size));
+        agents.add(new AestheticAgent(rand_x, rand_y, BUDDHISM, (int)random(image_cnt[BUDDHISM]), 1000, speed, size));
       }
       //Animism
       else if (currentSwitchValue == 7) {
         //else if (key == '8') {
-        agents.add(new AestheticAgent(rand_x, rand_y, ANIMISM, rand_img_idx, 1000, speed, size));
+        agents.add(new AestheticAgent(rand_x, rand_y, ANIMISM, (int)random(image_cnt[ANIMISM]), 1000, speed, size));
       }
     }
   }

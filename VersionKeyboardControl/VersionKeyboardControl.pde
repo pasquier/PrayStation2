@@ -9,7 +9,7 @@
 // resources
 ArrayList<ArrayList<PImage>> images;
 // record how many images each belief has. In the order of {CHRISTIANITY, ISLAM, ATHEIST, HINDUISM, CHINESE, BUDDHISM, ANIMISM}
-int[] image_cnt = {16, 8, 15, 5, 11, 6, 7};
+int[] image_cnt = {16, 8, 14, 5, 11, 6, 7};
 PImage history;
 int agnostic_belif = int(random(6));
 int agnostic_img_idx = int(random(6));
@@ -219,7 +219,7 @@ void keyPressed() {
     println("\nspeed: " + speed);
     break;
 
-    // keys to change speed variable
+    // keys to change size variable
   case 'u':
   case 'U':
     size = 1.0;
@@ -350,7 +350,7 @@ void draw() {
         //else if (key == '3') {
         agents.add(new AestheticAgent(rand_x, rand_y, agnostic_belif, agnostic_img_idx, 1000, speed, size));
       }
-      //Aetheist
+      //Atheist
       else if (currentSwitchValue == 3) {
         //else if (key == '4') {
         agents.add(new AestheticAgent(rand_x, rand_y, ATHEIST, (int)random(image_cnt[ATHEIST]), 1000, speed, size));
